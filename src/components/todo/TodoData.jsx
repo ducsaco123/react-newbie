@@ -1,4 +1,6 @@
-const TodoData = () => {
+const TodoData = (props) => {
+
+    const { name, age, data } = props;
     return (
         <>
             <div className="todo-list">
@@ -6,7 +8,16 @@ const TodoData = () => {
                     Learning React
                 </div>
                 <div>
-                    Do homework
+                    My name is {name}
+                </div>
+                <div>
+                    {age}
+                </div>
+                <div>
+                    {data.address}
+                </div>
+                <div>
+                    {data.country}
                 </div>
             </div>
         </>
