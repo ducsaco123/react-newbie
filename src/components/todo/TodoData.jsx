@@ -1,13 +1,15 @@
 const TodoData = (props) => {
     const { todoList } = props;
+    console.log(todoList);
+
     return (
         <>
             <div className="todo-list">
                 <div>
-                    {todoList.map((todo, index) => {
+                    {todoList.map((todo) => {
                         return (
                             <div>
-                                <p >{todo.title}</p>
+                                <p id={todo.id}>{todo.title}</p>
                             </div>
                         )
                     })}

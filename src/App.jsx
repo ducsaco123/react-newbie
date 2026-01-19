@@ -12,7 +12,13 @@ const App = () => {
     { id: 2, title: 'Watching Youtube' },
   ]);
 
-
+  const addNewTodo = (newTodo) => {
+    const newId = todoList.length + 1;
+    const newTitle = newTodo;
+    const newTodoItem = { id: newId, title: newTitle };
+    //js spread: (...) to copy array
+    setTodoList([...todoList, newTodoItem]);
+  }
   return (
     <>
       <div className="todo-container">
@@ -20,7 +26,7 @@ const App = () => {
           <p>Todo List</p>
         </div>
         <TodoNew
-        // addNewTodo={addNewTodo}
+          addNewTodo={addNewTodo}
         />
         <TodoData
           todoList={todoList}
