@@ -1,5 +1,9 @@
 const TodoData = (props) => {
-    const { todoList } = props;
+    const { todoList, deleteTodo } = props;
+
+    const handleOnClickDelete = (id) => {
+        deleteTodo(id)
+    }
 
     const listItem = todoList.map((todo) => {
         return (
@@ -8,7 +12,9 @@ const TodoData = (props) => {
                     <div>
                         <li>{todo.title}</li>
                     </div>
-                    <button className="delete-button">Delete</button>
+                    <button className="delete-button" onClick={() => {
+                        handleOnClickDelete(todo.id);
+                    }}>Delete</button>
                 </div>
             </>
         )

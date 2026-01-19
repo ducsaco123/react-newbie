@@ -10,11 +10,23 @@ const App = () => {
   const [todoList, setTodoList] = useState([]);
 
   const addNewTodo = (newTodo) => {
-    const newId = todoList.length + 1;
+    const newId = todoList.length > 0 ? Math.max(...todoList.map(todo => todo.id)) + 1 : 1;
     const newTitle = newTodo;
     const newTodoItem = { id: newId, title: newTitle };
+
     //js spread: (...) to copy array
     setTodoList([...todoList, newTodoItem]);
+  }
+
+
+  const deleteTodo = (id) => {
+    const newTodoList = todoList.filter((item) => {
+      return item.id !== id;
+    })
+    console.log(newTodoList);
+
+    setTodoList(newTodoList);
+
   }
   return (
     <>
@@ -28,6 +40,7 @@ const App = () => {
 
         {todoList.length > 0 ? <TodoData
           todoList={todoList}
+          deleteTodo={deleteTodo}
         />
           :
           <div className='todo-image'>
