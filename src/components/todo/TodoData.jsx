@@ -1,18 +1,26 @@
 const TodoData = (props) => {
     const { todoList } = props;
-    console.log(todoList);
+
+    const listItem = todoList.map((todo) => {
+        return (
+            <>
+                <div className="todo-item">
+                    <div>
+                        <li id={todo.id}>{todo.title}</li>
+                    </div>
+                    <button className="delete-button">Delete</button>
+                </div>
+            </>
+        )
+    });
 
     return (
         <>
             <div className="todo-list">
                 <div>
-                    {todoList.map((todo) => {
-                        return (
-                            <div>
-                                <p id={todo.id}>{todo.title}</p>
-                            </div>
-                        )
-                    })}
+                    <ul>
+                        {listItem}
+                    </ul>
                 </div>
 
             </div>

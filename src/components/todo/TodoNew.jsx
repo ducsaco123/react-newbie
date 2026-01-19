@@ -6,8 +6,12 @@ const TodoNew = (props) => {
     const { addNewTodo } = props;
 
     const [valueInput, setValueInput] = useState('');
+
     const handleOnClick = () => {
-        addNewTodo(valueInput);
+        if (valueInput.trim() !== '') {
+            addNewTodo(valueInput);
+            setValueInput('');
+        }
     }
 
     const handleOnChange = (name) => {
@@ -16,11 +20,10 @@ const TodoNew = (props) => {
     return (
         <>
             <div className="todo-input-container">
-                <input type="text" className='todo-input' placeholder='Enter your task...' onChange={(e) => handleOnChange(e.target.value)} />
+                <input type="text" className='todo-input' placeholder='Enter your task...' onChange={(e) => {
+                    handleOnChange(e.target.value)
+                }} value={valueInput} />
                 <button className='todo-button' onClick={handleOnClick}>Add</button>
-            </div>
-            <div>
-                <p>My text input is: {valueInput}</p>
             </div>
         </>
     )
