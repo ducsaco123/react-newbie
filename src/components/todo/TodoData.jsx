@@ -1,24 +1,18 @@
 const TodoData = (props) => {
-
-    const { name, age, data } = props;
+    const { todoList } = props;
     return (
         <>
             <div className="todo-list">
                 <div>
-                    Learning React
+                    {todoList.map((todo, index) => {
+                        return (
+                            <div>
+                                <p >{todo.title}</p>
+                            </div>
+                        )
+                    })}
                 </div>
-                <div>
-                    My name is {name}
-                </div>
-                <div>
-                    {age}
-                </div>
-                <div>
-                    {data.address}
-                </div>
-                <div>
-                    {data.country}
-                </div>
+
             </div>
         </>
     )
