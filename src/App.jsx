@@ -3,6 +3,8 @@ import TodoNew from './components/todo/TodoNew'
 import TodoData from './components/todo/TodoData'
 import reactLogo from './assets/react.svg'
 import { useState } from 'react'
+import Header from './components/layout/Header'
+import Footer from './components/layout/Footer'
 
 const App = () => {
 
@@ -30,6 +32,7 @@ const App = () => {
   }
   return (
     <>
+      <Header />
       <div className="todo-container">
         <div className="todo-title">
           <p>Todo List</p>
@@ -48,6 +51,7 @@ const App = () => {
           </div>}
 
       </div>
+      <Footer />
     </>
   )
 }

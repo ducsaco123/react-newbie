@@ -23,12 +23,9 @@ const TodoData = (props) => {
     return (
         <>
             <div className="todo-list">
-                <div>
-                    <ul>
-                        {listItem}
-                    </ul>
-                </div>
-
+                <ul>
+                    {listItem}
+                </ul>
             </div>
         </>
     )
