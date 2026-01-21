@@ -14,15 +14,17 @@ import './styles/global.css'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
-  },
-  {
-    path: '/users',
-    element: <Users />
-  },
-  {
-    path: '/products',
-    element: <Products />
+    element: <App />,
+    children: [
+      {
+        path: '/users',
+        element: <Users />
+      },
+      {
+        path: '/products',
+        element: <Products />
+      }
+    ]
   },
   {
     path: '/login',
