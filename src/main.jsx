@@ -7,27 +7,29 @@ import {
 } from "react-router-dom";
 import LoginPage from './pages/login.jsx';
 import RegisterPage from './pages/register.jsx';
-import Products from './pages/products.jsx';
-import Users from './pages/users.jsx';
+import Book from './pages/book.jsx';
+import User from './pages/user.jsx';
 import './styles/global.css'
 import TodoApp from './components/todo/TodoApp.jsx';
+import ErrorPage from './pages/error.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         element: <TodoApp />
       },
       {
-        path: '/users',
-        element: <Users />
+        path: '/user',
+        element: <User />
       },
       {
-        path: '/products',
-        element: <Products />
+        path: '/book',
+        element: <Book />
       }
     ]
   },
