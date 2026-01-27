@@ -1,14 +1,22 @@
 import { Button, Input } from "antd";
 import { useState } from "react";
-
+import axios from "axios";
 const UserForm = () => {
   const [fullName, setFullName] = useState("");
-  const [Email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
-  const [Phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleClickBtn = () => {
-    console.log(fullName, Email, Password, Phone);
+    const URL_BACKEND = "http://localhost:8080/api/v1/user";
+    const data = {
+      fullName,
+      email,
+      password,
+      phone,
+    };
+    axios.post(URL_BACKEND, data);
+    console.log(fullName, email, password, phone);
   };
   return (
     <div className="user-form" style={{ width: "90%", margin: "10px 20px" }}>
@@ -22,18 +30,18 @@ const UserForm = () => {
         </div>
         <div>
           <span>Email</span>
-          <Input value={Email} onChange={(e) => setEmail(e.target.value)} />
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <span>Password</span>
           <Input.Password
-            value={Password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div>
           <span>Phone</span>
-          <Input value={Phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
         </div>
         <div>
           <Button type="primary" onClick={handleClickBtn}>
