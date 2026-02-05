@@ -1,52 +1,47 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import LoginPage from './pages/login.jsx';
-import RegisterPage from './pages/register.jsx';
-import Book from './pages/book.jsx';
-import User from './pages/user.jsx';
-import './styles/global.css'
-import TodoApp from './components/todo/TodoApp.jsx';
-import ErrorPage from './pages/error.jsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from "./pages/login.jsx";
+import RegisterPage from "./pages/register.jsx";
+import Book from "./pages/book.jsx";
+import User from "./pages/user.jsx";
+import "./styles/global.css";
+import TodoApp from "./components/todo/TodoApp.jsx";
+import ErrorPage from "./pages/error.jsx";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <TodoApp />
+        element: <TodoApp />,
       },
       {
-        path: '/user',
-        element: <User />
+        path: "/user",
+        element: <User />,
       },
       {
-        path: '/book',
-        element: <Book />
-      }
-    ]
+        path: "/book",
+        element: <Book />,
+      },
+    ],
   },
   {
-    path: '/login',
-    element: <LoginPage />
+    path: "/login",
+    element: <LoginPage />,
   },
   {
-    path: '/register',
-    element: <RegisterPage />
-  }
-])
+    path: "/register",
+    element: <RegisterPage />,
+  },
+]);
 
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* <App /> */}
-    <RouterProvider router={router} />
+    <RouterProvider router={router} />,{/* <App /> */}
   </React.StrictMode>,
-)
+);
