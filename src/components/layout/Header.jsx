@@ -1,18 +1,40 @@
-import { Link, NavLink } from 'react-router-dom';
-import './header.css'
-
+import { Link, NavLink } from "react-router-dom";
+import { Menu } from "antd";
+import { BookOutlined, HomeOutlined, UserOutlined } from "@ant-design/icons";
+import { useState } from "react";
 const Header = () => {
-    return (
-        <>
-            <div className='header'>
-                <ul>
-                    <li><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="/user">Users</NavLink></li>
-                    <li><NavLink to="/Book">Books</NavLink></li>
-                </ul>
-            </div>
-        </>
-    )
-}
+  const [current, setCurrent] = useState("");
+  const onClick = (e) => {
+    console.log("click ", e);
+    setCurrent(e.key);
+  };
+  const items = [
+    {
+      label: <Link to="/">Home</Link>,
+      key: "home",
+      icon: <HomeOutlined />,
+    },
+    {
+      label: <NavLink to="/user">Users</NavLink>,
+      key: "users",
+      icon: <UserOutlined />,
+    },
+    {
+      label: <NavLink to="/book">Books</NavLink>,
+      key: "books",
+      icon: <BookOutlined />,
+    },
+  ];
+  return (
+    <>
+      <Menu
+        onClick={onClick}
+        selectedKeys={[current]}
+        mode="horizontal"
+        items={items}
+      />
+    </>
+  );
+};
 
 export default Header;

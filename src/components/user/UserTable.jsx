@@ -1,4 +1,6 @@
-import { Table } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Space, Table } from "antd";
+import UpdateUserModal from "./UpdateUserModal";
 
 const UserTable = ({ dataUsers }) => {
   const columns = [
@@ -16,6 +18,18 @@ const UserTable = ({ dataUsers }) => {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => {
+        return (
+          <Space size="middle">
+            <EditOutlined style={{ cursor: "pointer", color: "orange" }} />
+            <DeleteOutlined style={{ cursor: "pointer", color: "red" }} />
+          </Space>
+        );
+      },
     },
   ];
   // const data = [
@@ -42,7 +56,12 @@ const UserTable = ({ dataUsers }) => {
   //   },
   // ];
 
-  return <Table columns={columns} dataSource={dataUsers} rowKey="_id" />;
+  return (
+    <>
+      <Table columns={columns} dataSource={dataUsers} rowKey="_id" />
+      <UpdateUserModal />
+    </>
+  );
 };
 
 export default UserTable;
