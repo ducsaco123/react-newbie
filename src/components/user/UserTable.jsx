@@ -2,12 +2,32 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Space, Table } from "antd";
 import UpdateUserModal from "./UpdateUserModal";
 import { useState } from "react";
+import ViewUserDetail from "./ViewUserDetail";
 
 const UserTable = ({ dataUsers, loadUser }) => {
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [selectUser, setSelectUser] = useState(null);
+  const [openUserDetail, setOpenUserDetail] = useState(false);
 
   const columns = [
+    {
+      title: "Id",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_, record) => {
+        return (
+          <a
+            href="#"
+            onClick={() => {
+              setSelectUser(record);
+              setOpenUserDetail(true);
+            }}
+          >
+            {record._id}
+          </a>
+        );
+      },
+    },
     {
       title: "Name",
       dataIndex: "fullName",
@@ -75,6 +95,12 @@ const UserTable = ({ dataUsers, loadUser }) => {
         selectUser={selectUser}
         setSelectUser={setSelectUser}
         loadUser={loadUser}
+      />
+      <ViewUserDetail
+        openUserDetail={openUserDetail}
+        setOpenUserDetail={setOpenUserDetail}
+        selectUser={selectUser}
+        setSelectUser={setSelectUser}
       />
     </>
   );
