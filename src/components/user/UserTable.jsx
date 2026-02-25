@@ -127,6 +127,7 @@ const UserTable = ({ dataUsers, loadUser }) => {
         setOpenUserDetail={setOpenUserDetail}
         selectUser={selectUser}
         setSelectUser={setSelectUser}
+        loadUser={loadUser}
       />
     </>
   );
