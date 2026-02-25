@@ -28,8 +28,8 @@ const deleteUserAPI = (_id) => {
   return axios.delete(URL_BACKEND);
 };
 
-const fetchAllUsersAPI = () => {
-  const URL_BACKEND = "/api/v1/user";
+const fetchAllUsersAPI = (current, pageSize) => {
+  const URL_BACKEND = `/api/v1/user?current=${current}&pageSize=${pageSize}`;
 
   return axios.get(URL_BACKEND);
 };

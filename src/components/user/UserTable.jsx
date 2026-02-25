@@ -5,7 +5,15 @@ import { useState } from "react";
 import { deleteUserAPI } from "../../services/api.service";
 import ViewUserDetail from "./ViewUserDetail";
 
-const UserTable = ({ dataUsers, loadUser }) => {
+const UserTable = ({
+  dataUsers,
+  loadUser,
+  current,
+  pageSize,
+  total,
+  setCurrent,
+  setPageSize,
+}) => {
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [selectUser, setSelectUser] = useState(null);
   const [openUserDetail, setOpenUserDetail] = useState(false);
@@ -26,7 +34,25 @@ const UserTable = ({ dataUsers, loadUser }) => {
       });
     }
   };
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    if (pagination && pagination.current && pagination.pageSize) {
+      if (current !== pagination.current) {
+        setCurrent(pagination.current);
+      }
+      if (pageSize !== pagination.pageSize) {
+        setPageSize(pagination.pageSize);
+      }
+    }
+  };
+
   const columns = [
+    {
+      title: "STT",
+      render: (_, record, index) => {
+        return <>{index + 1 + (current - 1) * pageSize}</>;
+      },
+    },
     {
       title: "Id",
       dataIndex: "_id",
@@ -114,7 +140,26 @@ const UserTable = ({ dataUsers, loadUser }) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={dataUsers} rowKey="_id" />
+      <Table
+        columns={columns}
+        dataSource={dataUsers}
+        rowKey="_id"
+        pagination={{
+          current: current,
+          pageSize: pageSize,
+          showSizeChanger: true,
+          total: total,
+          showTotal: (total, range) => {
+            return (
+              <div>
+                {" "}
+                {range[0]}-{range[1]} trên {total} rows
+              </div>
+            );
+          },
+        }}
+        onChange={onChange}
+      />
       <UpdateUserModal
         isModalUpdateOpen={isModalUpdateOpen}
         setIsModalUpdateOpen={setIsModalUpdateOpen}
