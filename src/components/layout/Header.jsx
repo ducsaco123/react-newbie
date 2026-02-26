@@ -24,6 +24,11 @@ const Header = () => {
       key: "books",
       icon: <BookOutlined />,
     },
+    {
+      label: <NavLink to="/register">Register</NavLink>,
+      key: "register",
+      icon: <UserOutlined />,
+    },
   ];
   return (
     <>
