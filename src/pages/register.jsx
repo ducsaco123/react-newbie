@@ -1,10 +1,31 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, notification } from "antd";
+import { registerUserAPI } from "../services/api.service";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
+  const navitgate = useNavigate();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log(values);
+    const res = await registerUserAPI(
+      values.fullName,
+      values.email,
+      values.password,
+      values.phone,
+    );
+    if (res.data) {
+      notification.success({
+        message: "Register User",
+        description: "Đăng ký user thành công",
+      });
+      navitgate("/login");
+    } else {
+      notification.error({
+        message: "Error Register User",
+        description: JSON.stringify(res.message),
+      });
+    }
   };
   return (
     <>
@@ -31,6 +52,7 @@ const RegisterPage = () => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             label="Email"
             name="email"
@@ -38,6 +60,7 @@ const RegisterPage = () => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             label="Password"
             name="password"
@@ -45,13 +68,21 @@ const RegisterPage = () => {
           >
             <Input.Password />
           </Form.Item>
+
           <Form.Item
             label="Phone"
             name="phone"
-            rules={[{ required: true, message: "Please input your Phone!" }]}
+            rules={[
+              {
+                required: true,
+                pattern: new RegExp(/\d+/g),
+                message: "Wrong format!",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
+
           <Form.Item>
             <Button type="primary" onClick={() => form.submit()}>
               Register
