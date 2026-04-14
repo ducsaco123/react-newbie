@@ -1,10 +1,10 @@
-import { Button, Col, Form, Input, notification, Row } from "antd";
+import { Button, Col, Form, Input, notification, Row, Typography } from "antd";
 import { registerUserAPI } from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
-  const navitgate = useNavigate();
+  const navigate = useNavigate();
 
   const onFinish = async (values) => {
     console.log(values);
@@ -19,7 +19,7 @@ const RegisterPage = () => {
         message: "Register User",
         description: "Đăng ký user thành công",
       });
-      navitgate("/login");
+      navigate("/login");
     } else {
       notification.error({
         message: "Error Register User",
@@ -34,7 +34,6 @@ const RegisterPage = () => {
         form={form}
         onFinish={onFinish}
         style={{ margin: "10px" }}
-        // onFinishFailed={onFinishFailed}
       >
         <Row justify={"center"}>
           <Col xs={24} md={8}>
@@ -101,6 +100,19 @@ const RegisterPage = () => {
                 Register
               </Button>
             </Form.Item>
+            <Typography.Text style={{ color: "#64748b", fontSize: "14px" }}>
+              Đã có tài khoản?{" "}
+              <span
+                onClick={() => navigate("/login")}
+                style={{
+                  color: "#1677ff",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Đăng nhập ngay
+              </span>
+            </Typography.Text>
           </Col>
         </Row>
       </Form>
