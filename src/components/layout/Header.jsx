@@ -2,8 +2,10 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu } from "antd";
 import {
   BookOutlined,
+  GithubOutlined,
   HomeOutlined,
-  SettingOutlined,
+  LoginOutlined,
+  LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { useContext, useState } from "react";
@@ -11,8 +13,7 @@ import { AuthContext } from "../context/auth.context";
 const Header = () => {
   const [current, setCurrent] = useState("");
 
-  const { user, setUser } = useContext(AuthContext);
-  console.log(user);
+  const { user } = useContext(AuthContext);
 
   const onClick = (e) => {
     console.log("click ", e);
@@ -34,23 +35,32 @@ const Header = () => {
       key: "books",
       icon: <BookOutlined />,
     },
-    {
-      label: "Settings",
-      key: "settings",
-      icon: <SettingOutlined />,
-      children: [
-        {
-          label: <NavLink to="/register">Register</NavLink>,
-          key: "register",
-          icon: <UserOutlined />,
-        },
-        {
-          label: <NavLink to="/login">Login</NavLink>,
-          key: "login",
-          icon: <UserOutlined />,
-        },
-      ],
-    },
+    ...(!user.id
+      ? [
+          {
+            label: <NavLink to="/login">Login</NavLink>,
+            key: "login",
+            icon: <LoginOutlined />,
+          },
+        ]
+      : []),
+
+    ...(user.id
+      ? [
+          {
+            label: `Welcome ${user.fullName}`,
+            key: "settings",
+            icon: <GithubOutlined />,
+            children: [
+              {
+                label: <NavLink to="/login">Logout</NavLink>,
+                key: "login",
+                icon: <LogoutOutlined />,
+              },
+            ],
+          },
+        ]
+      : []),
   ];
   return (
     <>
