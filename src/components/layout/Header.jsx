@@ -1,5 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
-import { Menu } from "antd";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Menu, message } from "antd";
 import {
   BookOutlined,
   GithubOutlined,
@@ -10,14 +10,32 @@ import {
 } from "@ant-design/icons";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth.context";
+import { logoutAPI } from "../../services/api.service";
 const Header = () => {
   const [current, setCurrent] = useState("");
 
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const onClick = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
+  const handleLogout = async () => {
+    try {
+      const res = await logoutAPI();
+      if (res.data) {
+        localStorage.removeItem("access_token");
+        setUser({
+          email: "",
+          phone: "",
+          fullName: "",
+          role: "",
+          avatar: "",
+          id: "",
+        });
+        message.success("Logout successfully");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   const items = [
     {
@@ -53,8 +71,16 @@ const Header = () => {
             icon: <GithubOutlined />,
             children: [
               {
-                label: <NavLink to="/login">Logout</NavLink>,
-                key: "login",
+                label: (
+                  <span
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </span>
+                ),
+                key: "logout",
                 icon: <LogoutOutlined />,
               },
             ],
@@ -64,12 +90,7 @@ const Header = () => {
   ];
   return (
     <>
-      <Menu
-        onClick={onClick}
-        selectedKeys={[current]}
-        mode="horizontal"
-        items={items}
-      />
+      <Menu selectedKeys={[current]} mode="horizontal" items={items} />
     </>
   );
 };
