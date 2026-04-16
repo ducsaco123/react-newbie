@@ -1,18 +1,37 @@
-import { Button, Input, InputNumber, Modal, notification } from "antd";
+import { Button, Input, InputNumber, Modal, notification, Select } from "antd";
 import { useState } from "react";
-import { createBookAPI } from "../../services/api.service";
+import { createBookAPI, handleUploadFileAPI } from "../../services/api.service";
 
 const BookForm = ({ fetchBooks }) => {
+  const [preview, setPreview] = useState(null);
+  const [thumbnail, setThumbnail] = useState("");
   const [mainText, setMainText] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const [author, setAuthor] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Arts");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOnChangeFile = async (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setPreview(null);
+      return;
+    }
+
+    const file = e.target.files[0];
+    if (file) {
+      const resUpload = await handleUploadFileAPI(file, "book");
+      if (resUpload.data) {
+        setThumbnail(resUpload.data.fileUploaded);
+      }
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleSubmitBtn = async () => {
     try {
       const res = await createBookAPI(
+        thumbnail,
         mainText,
         author,
         price,
@@ -40,9 +59,11 @@ const BookForm = ({ fetchBooks }) => {
   const resetAndCloseModal = () => {
     setMainText("");
     setAuthor("");
-    setPrice(0);
-    setQuantity(0);
-    setCategory("");
+    setPrice(1);
+    setQuantity(1);
+    setCategory("Arts");
+    setThumbnail("");
+    setPreview(null);
     setIsModalOpen(false);
   };
 
@@ -68,7 +89,7 @@ const BookForm = ({ fetchBooks }) => {
       >
         <div style={{ display: "flex", gap: "15px", flexDirection: "column" }}>
           <div>
-            <span>Main Text</span>
+            <span>Title</span>
             <Input
               value={mainText}
               onChange={(e) => setMainText(e.target.value)}
@@ -80,24 +101,83 @@ const BookForm = ({ fetchBooks }) => {
           </div>
           <div>
             <span>Price</span>
-            <InputNumber
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
+            <InputNumber value={price} min={1} onChange={(e) => setPrice(e)} />
           </div>
           <div>
             <span>Quantity</span>
             <InputNumber
               value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              min={1}
+              onChange={(e) => setQuantity(e)}
             />
           </div>
           <div>
             <span>Category</span>
-            <Input
+            <Select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              style={{ width: 120 }}
+              onChange={(value) => setCategory(value)}
+              options={[
+                { value: "Arts", label: "Arts" },
+                { value: "Business", label: "Business" },
+                { value: "Comics", label: "Comics" },
+
+                { value: "Cooking", label: "Cooking" },
+                { value: "Entertainment", label: "Entertainment" },
+                { value: "History", label: "History" },
+
+                { value: "Music", label: "Music" },
+                { value: "Sports", label: "Sports" },
+                { value: "Teen", label: "Teen" },
+                { value: "Travel", label: "Travel" },
+              ]}
             />
+          </div>
+          <div>
+            <span>Image</span>
+            <div>
+              <label
+                htmlFor="btnUpload"
+                style={{
+                  display: "block",
+                  width: "fit-content",
+                  marginTop: "15px",
+                  padding: "5px 10px",
+                  background: "aqua",
+                  cursor: "pointer",
+                  borderRadius: "5px",
+                }}
+              >
+                Upload Image
+              </label>
+              <input
+                type="file"
+                hidden
+                id="btnUpload"
+                onChange={handleOnChangeFile}
+              />
+            </div>
+            {preview && (
+              <>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    width: "150px",
+                    height: "100px",
+                    border: "1px solid #ccc",
+                  }}
+                >
+                  <img
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain",
+                    }}
+                    src={preview}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </Modal>
