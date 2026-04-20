@@ -1,16 +1,20 @@
-import { Button, Input, InputNumber, Modal, notification, Select } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  notification,
+  Select,
+} from "antd";
 import { useState } from "react";
 import { createBookAPI, handleUploadFileAPI } from "../../services/api.service";
 
 const BookForm = ({ fetchBooks }) => {
   const [preview, setPreview] = useState(null);
   const [thumbnail, setThumbnail] = useState("");
-  const [mainText, setMainText] = useState("");
-  const [price, setPrice] = useState(1);
-  const [quantity, setQuantity] = useState(1);
-  const [author, setAuthor] = useState("");
-  const [category, setCategory] = useState("Arts");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form] = Form.useForm();
 
   const handleOnChangeFile = async (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -28,8 +32,9 @@ const BookForm = ({ fetchBooks }) => {
     }
   };
 
-  const handleSubmitBtn = async () => {
+  const handleSubmitBtn = async (values) => {
     try {
+      const { mainText, author, price, quantity, category } = values;
       const res = await createBookAPI(
         thumbnail,
         mainText,
@@ -57,11 +62,7 @@ const BookForm = ({ fetchBooks }) => {
   };
 
   const resetAndCloseModal = () => {
-    setMainText("");
-    setAuthor("");
-    setPrice(1);
-    setQuantity(1);
-    setCategory("Arts");
+    form.resetFields();
     setThumbnail("");
     setPreview(null);
     setIsModalOpen(false);
@@ -81,42 +82,61 @@ const BookForm = ({ fetchBooks }) => {
         title="Create Book"
         open={isModalOpen}
         onOk={() => {
-          handleSubmitBtn();
+          form.submit();
         }}
         okText="Create"
         onCancel={() => resetAndCloseModal()}
         maskClosable={false}
       >
-        <div style={{ display: "flex", gap: "15px", flexDirection: "column" }}>
-          <div>
-            <span>Title</span>
-            <Input
-              value={mainText}
-              onChange={(e) => setMainText(e.target.value)}
-            />
-          </div>
-          <div>
-            <span>Author</span>
-            <Input value={author} onChange={(e) => setAuthor(e.target.value)} />
-          </div>
-          <div>
-            <span>Price</span>
-            <InputNumber value={price} min={1} onChange={(e) => setPrice(e)} />
-          </div>
-          <div>
-            <span>Quantity</span>
-            <InputNumber
-              value={quantity}
-              min={1}
-              onChange={(e) => setQuantity(e)}
-            />
-          </div>
-          <div>
-            <span>Category</span>
+        <Form
+          name="basic"
+          style={{ maxWidth: 600 }}
+          initialValues={{ remember: true }}
+          form={form}
+          onFinish={handleSubmitBtn}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Title"
+            name="mainText"
+            rules={[{ required: true, message: "Please input your title!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Author"
+            name="author"
+            rules={[{ required: true, message: "Please input your author!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[{ required: true, message: "Please input your price!" }]}
+          >
+            <InputNumber min={1} addonAfter={" đ"} />
+          </Form.Item>
+
+          <Form.Item
+            label="Quantity"
+            name="quantity"
+            rules={[{ required: true, message: "Please input your quantity!" }]}
+          >
+            <InputNumber min={1} />
+          </Form.Item>
+
+          <Form.Item
+            label="Category"
+            name="category"
+            rules={[
+              { required: true, message: "Please select your category!" },
+            ]}
+          >
             <Select
-              value={category}
               style={{ width: 120 }}
-              onChange={(value) => setCategory(value)}
               options={[
                 { value: "Arts", label: "Arts" },
                 { value: "Business", label: "Business" },
@@ -132,53 +152,56 @@ const BookForm = ({ fetchBooks }) => {
                 { value: "Travel", label: "Travel" },
               ]}
             />
-          </div>
+          </Form.Item>
+        </Form>
+        <div>
+          <span>Image</span>
           <div>
-            <span>Image</span>
-            <div>
-              <label
-                htmlFor="btnUpload"
+            <label
+              htmlFor="btnUpload"
+              style={{
+                display: "block",
+                width: "fit-content",
+                marginTop: "15px",
+                padding: "5px 10px",
+                background: "aqua",
+                cursor: "pointer",
+                borderRadius: "5px",
+              }}
+            >
+              Upload Image
+            </label>
+            <input
+              type="file"
+              hidden
+              id="btnUpload"
+              onChange={handleOnChangeFile}
+              onClick={(event) => {
+                event.target.value = null;
+              }}
+            />
+          </div>
+          {preview && (
+            <>
+              <div
                 style={{
-                  display: "block",
-                  width: "fit-content",
-                  marginTop: "15px",
-                  padding: "5px 10px",
-                  background: "aqua",
-                  cursor: "pointer",
-                  borderRadius: "5px",
+                  marginTop: "10px",
+                  width: "150px",
+                  height: "100px",
+                  border: "1px solid #ccc",
                 }}
               >
-                Upload Image
-              </label>
-              <input
-                type="file"
-                hidden
-                id="btnUpload"
-                onChange={handleOnChangeFile}
-              />
-            </div>
-            {preview && (
-              <>
-                <div
+                <img
                   style={{
-                    marginTop: "10px",
-                    width: "150px",
-                    height: "100px",
-                    border: "1px solid #ccc",
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "contain",
                   }}
-                >
-                  <img
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "contain",
-                    }}
-                    src={preview}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+                  src={preview}
+                />
+              </div>
+            </>
+          )}
         </div>
       </Modal>
     </div>
