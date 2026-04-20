@@ -49,6 +49,13 @@ const UpdateBookModal = ({
 
   const handleSubmitBtn = async (values) => {
     try {
+      if (!thumbnail && !preview) {
+        notification.error({
+          message: "Error Update Book",
+          description: "Vui lòng upload ảnh bìa cho sách",
+        });
+        return;
+      }
       const { mainText, author, price, quantity, category } = values;
       const res = await updateBookAPI(
         id,
@@ -82,6 +89,7 @@ const UpdateBookModal = ({
     setSelectBook(null);
     setThumbnail("");
     setPreview(null);
+    setId("");
     setIsModalUpdateOpen(false);
   };
   return (

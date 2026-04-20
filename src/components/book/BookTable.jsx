@@ -47,6 +47,7 @@ const BookTable = ({
           message: "Delete book success",
           description: "Xóa book thành công",
         });
+        await fetchBooks();
       } else {
         notification.error({
           message: "Delete book failed",
