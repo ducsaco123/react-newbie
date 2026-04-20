@@ -33,10 +33,13 @@ const UserForm = ({ loadUser }) => {
     setPhone("");
   };
   return (
-    <div className="user-form" style={{ width: "90%", margin: "10px 20px" }}>
-      <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h3>Table Users</h3>
+    <div className="user-form">
+      <div className="section-toolbar">
+        <div className="section-title">
+          <h2>User Management</h2>
+          <p>Tạo nhanh người dùng mới và đồng bộ lại danh sách hiện tại.</p>
+        </div>
+        <div>
           <Button type="primary" onClick={() => setIsModalOpen(true)}>
             Create User
           </Button>
@@ -52,7 +55,7 @@ const UserForm = ({ loadUser }) => {
         onCancel={() => resetAndCloseModal()}
         maskClosable={false}
       >
-        <div style={{ display: "flex", gap: "15px", flexDirection: "column" }}>
+        <div className="modal-form-grid">
           <div>
             <span>Full Name</span>
             <Input

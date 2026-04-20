@@ -1,54 +1,47 @@
-import './todo.css'
-import TodoNew from './TodoNew'
-import TodoData from './TodoData'
-import reactLogo from '../../assets/react.svg'
-import { useState } from 'react'
-
+import "./todo.css";
+import TodoNew from "./TodoNew";
+import TodoData from "./TodoData";
+import reactLogo from "../../assets/react.svg";
+import { useState } from "react";
 
 const TodoApp = () => {
-    const [todoList, setTodoList] = useState([]);
+  const [todoList, setTodoList] = useState([]);
 
-    const addNewTodo = (newTodo) => {
-        const newId = todoList.length > 0 ? Math.max(...todoList.map(todo => todo.id)) + 1 : 1;
-        const newTitle = newTodo;
-        const newTodoItem = { id: newId, title: newTitle };
+  const addNewTodo = (newTodo) => {
+    const newId =
+      todoList.length > 0
+        ? Math.max(...todoList.map((todo) => todo.id)) + 1
+        : 1;
+    const newTodoItem = { id: newId, title: newTodo };
+    setTodoList([...todoList, newTodoItem]);
+  };
 
-        //js spread: (...) to copy array
-        setTodoList([...todoList, newTodoItem]);
-    }
+  const deleteTodo = (id) => {
+    const newTodoList = todoList.filter((item) => item.id !== id);
+    setTodoList(newTodoList);
+  };
 
+  return (
+    <div className="page-shell">
+      <section className="todo-card todo-container">
+        <div className="todo-title">
+          <p>Todo List</p>
+          <span>Thêm việc cần làm và xoá nhanh khi hoàn thành.</span>
+        </div>
 
-    const deleteTodo = (id) => {
-        const newTodoList = todoList.filter((item) => {
-            return item.id !== id;
-        })
-        console.log(newTodoList);
+        <TodoNew addNewTodo={addNewTodo} />
 
-        setTodoList(newTodoList);
-
-    }
-    return (
-        <>
-            <div className="todo-container">
-                <div className="todo-title">
-                    <p>Todo List</p>
-                </div>
-                <TodoNew
-                    addNewTodo={addNewTodo}
-                />
-
-                {todoList.length > 0 ? <TodoData
-                    todoList={todoList}
-                    deleteTodo={deleteTodo}
-                />
-                    :
-                    <div className='todo-image'>
-                        <img src={reactLogo} className='logo' />
-                    </div>}
-
-            </div>
-        </>
-    )
-}
+        {todoList.length > 0 ? (
+          <TodoData todoList={todoList} deleteTodo={deleteTodo} />
+        ) : (
+          <div className="todo-empty-state">
+            <img src={reactLogo} className="logo" alt="React logo" />
+            <p>Danh sách đang trống, thêm task đầu tiên để bắt đầu.</p>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+};
 
 export default TodoApp;

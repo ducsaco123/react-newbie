@@ -2,18 +2,14 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import { Outlet } from "react-router-dom";
 import { getAccountAPI } from "./services/api.service";
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import { AuthContext } from "./components/context/auth.context";
 import { Spin } from "antd";
 
 const App = () => {
   const { setUser, isLoading, setIsLoading } = useContext(AuthContext);
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await getAccountAPI();
@@ -25,28 +21,27 @@ const App = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [setIsLoading, setUser]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [fetchUserInfo]);
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
+      <div className="app-loading">
         <Spin />
       </div>
     );
   }
   return (
-    <>
+    <div className="app-shell">
       <Header />
-      <Outlet />
+      <main className="app-main">
+        <Outlet />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

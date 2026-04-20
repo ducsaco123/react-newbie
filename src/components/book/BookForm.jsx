@@ -69,10 +69,13 @@ const BookForm = ({ fetchBooks }) => {
   };
 
   return (
-    <div className="user-form" style={{ width: "90%", margin: "10px 20px" }}>
-      <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h3>Table Books</h3>
+    <div className="user-form">
+      <div className="section-toolbar">
+        <div className="section-title">
+          <h2>Book Inventory</h2>
+          <p>Thêm đầu sách mới với biểu mẫu rõ ràng và dễ quan sát hơn.</p>
+        </div>
+        <div>
           <Button type="primary" onClick={() => setIsModalOpen(true)}>
             Create Book
           </Button>
@@ -90,6 +93,7 @@ const BookForm = ({ fetchBooks }) => {
       >
         <Form
           name="basic"
+          layout="vertical"
           style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           form={form}
@@ -136,7 +140,7 @@ const BookForm = ({ fetchBooks }) => {
             ]}
           >
             <Select
-              style={{ width: 120 }}
+              style={{ width: "100%" }}
               options={[
                 { value: "Arts", label: "Arts" },
                 { value: "Business", label: "Business" },
@@ -157,18 +161,7 @@ const BookForm = ({ fetchBooks }) => {
         <div>
           <span>Image</span>
           <div>
-            <label
-              htmlFor="btnUpload"
-              style={{
-                display: "block",
-                width: "fit-content",
-                marginTop: "15px",
-                padding: "5px 10px",
-                background: "aqua",
-                cursor: "pointer",
-                borderRadius: "5px",
-              }}
-            >
+            <label htmlFor="btnUpload" className="upload-trigger">
               Upload Image
             </label>
             <input
@@ -182,25 +175,16 @@ const BookForm = ({ fetchBooks }) => {
             />
           </div>
           {preview && (
-            <>
-              <div
+            <div className="upload-preview">
+              <img
                 style={{
-                  marginTop: "10px",
-                  width: "150px",
-                  height: "100px",
-                  border: "1px solid #ccc",
+                  height: "100%",
+                  width: "100%",
+                  objectFit: "contain",
                 }}
-              >
-                <img
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={preview}
-                />
-              </div>
-            </>
+                src={preview}
+              />
+            </div>
           )}
         </div>
       </Modal>

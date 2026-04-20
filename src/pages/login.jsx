@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Space,
-  Typography,
-  notification,
-} from "antd";
+import { Button, Form, Input, Typography, notification } from "antd";
 import { loginUserAPI } from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -43,39 +35,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        background:
-          "linear-gradient(135deg, rgb(244, 247, 255) 0%, rgb(232, 243, 255) 100%)",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "440px",
-          padding: "32px 28px",
-          borderRadius: "24px",
-          backgroundColor: "#ffffff",
-          boxShadow: "0 20px 60px rgba(15, 23, 42, 0.12)",
-          border: "1px solid rgba(148, 163, 184, 0.18)",
-        }}
-      >
-        <Space direction="vertical" size={6} style={{ marginBottom: "28px" }}>
-          <Typography.Title
-            level={2}
-            style={{ margin: 0, fontSize: "30px", color: "#0f172a" }}
-          >
-            Welcome back
-          </Typography.Title>
-          <Typography.Text style={{ color: "#64748b", fontSize: "15px" }}>
-            Đăng nhập để tiếp tục sử dụng hệ thống của bạn.
-          </Typography.Text>
-        </Space>
+    <div className="auth-shell">
+      <div className="auth-card">
+        <div className="auth-title">
+          <h1>Welcome back</h1>
+          <p>Đăng nhập để tiếp tục sử dụng hệ thống của bạn.</p>
+        </div>
 
         <Form
           name="basic"
@@ -104,28 +69,16 @@ const LoginPage = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item label={null}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              size="large"
-              style={{ height: "44px", fontWeight: 600, borderRadius: "12px" }}
-            >
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block size="large" loading={loading}>
               Đăng nhập
             </Button>
           </Form.Item>
         </Form>
-        <Typography.Text style={{ color: "#64748b", fontSize: "14px" }}>
-          Chưa có tài khoản?{" "}
-          <span
-            onClick={() => navigate("/register")}
-            style={{
-              color: "#1677ff",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
-          >
+
+        <Typography.Text className="auth-footer">
+          Chưa có tài khoản? {" "}
+          <span className="auth-link" onClick={() => navigate("/register")}>
             Đăng ký ngay
           </span>
         </Typography.Text>

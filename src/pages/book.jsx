@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useCallback, useEffect, useState } from "react";
 import BookTable from "../components/book/BookTable";
 import { getBookAPI } from "../services/api.service";
 import BookForm from "../components/book/BookForm";
@@ -9,11 +9,7 @@ const Book = () => {
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    fetchBooks();
-  }, [current, pageSize]);
-
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       const res = await getBookAPI(current, pageSize);
       if (res.data && res.data.result) {
@@ -25,21 +21,32 @@ const Book = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [current, pageSize]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
 
   return (
-    <>
-      <BookForm fetchBooks={fetchBooks} />
-      <BookTable
-        dataBooks={dataBooks}
-        current={current}
-        pageSize={pageSize}
-        total={total}
-        setCurrent={setCurrent}
-        setPageSize={setPageSize}
-        fetchBooks={fetchBooks}
-      />
-    </>
+    <div className="page-shell">
+      <div className="dashboard-grid">
+        <section className="section-card">
+          <BookForm fetchBooks={fetchBooks} />
+        </section>
+
+        <section className="data-card">
+          <BookTable
+            dataBooks={dataBooks}
+            current={current}
+            pageSize={pageSize}
+            total={total}
+            setCurrent={setCurrent}
+            setPageSize={setPageSize}
+            fetchBooks={fetchBooks}
+          />
+        </section>
+      </div>
+    </div>
   );
 };
 

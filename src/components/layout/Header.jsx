@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, message } from "antd";
 import {
   BookOutlined,
@@ -8,14 +8,15 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/auth.context";
 import { logoutAPI } from "../../services/api.service";
-const Header = () => {
-  const [current, setCurrent] = useState("");
+import "./header.css";
 
+const Header = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -89,9 +90,24 @@ const Header = () => {
       : []),
   ];
   return (
-    <>
-      <Menu selectedKeys={[current]} mode="horizontal" items={items} />
-    </>
+    <header className="site-header">
+      <div className="site-header__inner">
+        <Link to="/" className="site-brand">
+          <span className="site-brand__badge">RV</span>
+          <div>
+            <strong>React Starter</strong>
+          </div>
+        </Link>
+        <Menu
+          className="site-menu"
+          selectedKeys={[
+            location.pathname === "/" ? "home" : location.pathname.slice(1),
+          ]}
+          mode="horizontal"
+          items={items}
+        />
+      </div>
+    </header>
   );
 };
 
