@@ -22,6 +22,10 @@ const TodoNew = (props) => {
             <div className="todo-input-container">
                 <input type="text" className='todo-input' placeholder='Enter your task...' onChange={(e) => {
                     handleOnChange(e.target.value)
+                }} onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleOnClick();
+                    }
                 }} value={valueInput} />
                 <button className='todo-button' onClick={handleOnClick}>Add</button>
             </div>
