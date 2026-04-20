@@ -13,6 +13,7 @@ const UserTable = ({
   total,
   setCurrent,
   setPageSize,
+  isLoading,
 }) => {
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [selectUser, setSelectUser] = useState(null);
@@ -159,6 +160,7 @@ const UserTable = ({
           },
         }}
         onChange={onChange}
+        loading={isLoading}
       />
       <UpdateUserModal
         isModalUpdateOpen={isModalUpdateOpen}

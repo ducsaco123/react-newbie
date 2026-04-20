@@ -8,8 +8,10 @@ const User = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadUser = useCallback(async () => {
+    setIsLoading(true);
     try {
       const res = await fetchAllUsersAPI(current, pageSize);
       if (res.data) {
@@ -20,6 +22,8 @@ const User = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }, [current, pageSize]);
 
@@ -43,6 +47,7 @@ const User = () => {
             total={total}
             setCurrent={setCurrent}
             setPageSize={setPageSize}
+            isLoading={isLoading}
           />
         </section>
       </div>

@@ -14,6 +14,7 @@ const BookForm = ({ fetchBooks }) => {
   const [preview, setPreview] = useState(null);
   const [thumbnail, setThumbnail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
   const [form] = Form.useForm();
 
   const handleOnChangeFile = async (e) => {
@@ -33,6 +34,7 @@ const BookForm = ({ fetchBooks }) => {
   };
 
   const handleSubmitBtn = async (values) => {
+    setIsLoadingBtn(true);
     try {
       const { mainText, author, price, quantity, category } = values;
       const res = await createBookAPI(
@@ -58,6 +60,8 @@ const BookForm = ({ fetchBooks }) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoadingBtn(false);
     }
   };
 
@@ -87,6 +91,7 @@ const BookForm = ({ fetchBooks }) => {
         onOk={() => {
           form.submit();
         }}
+        okButtonProps={{ loading: isLoadingBtn }}
         okText="Create"
         onCancel={() => resetAndCloseModal()}
         maskClosable={false}

@@ -7,8 +7,10 @@ const UserForm = ({ loadUser }) => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingBtn, setIsLoadingBtn] = useState(false);
 
   const handleSubmitBtn = async () => {
+    setIsLoadingBtn(true);
     const res = await createUserAPI(fullName, email, password, phone);
     if (res.data) {
       notification.success({
@@ -23,6 +25,7 @@ const UserForm = ({ loadUser }) => {
         description: JSON.stringify(res.message),
       });
     }
+    setIsLoadingBtn(false);
   };
 
   const resetAndCloseModal = () => {
@@ -50,6 +53,9 @@ const UserForm = ({ loadUser }) => {
         open={isModalOpen}
         onOk={() => {
           handleSubmitBtn();
+        }}
+        okButtonProps={{
+          loading: isLoadingBtn,
         }}
         okText="Create"
         onCancel={() => resetAndCloseModal()}

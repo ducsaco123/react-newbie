@@ -8,8 +8,10 @@ const Book = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchBooks = useCallback(async () => {
+    setIsLoading(true);
     try {
       const res = await getBookAPI(current, pageSize);
       if (res.data && res.data.result) {
@@ -20,6 +22,8 @@ const Book = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }, [current, pageSize]);
 
@@ -43,6 +47,7 @@ const Book = () => {
             setCurrent={setCurrent}
             setPageSize={setPageSize}
             fetchBooks={fetchBooks}
+            isLoading={isLoading}
           />
         </section>
       </div>

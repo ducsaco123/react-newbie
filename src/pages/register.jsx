@@ -1,12 +1,16 @@
 import { Button, Form, Input, Typography, notification } from "antd";
 import { registerUserAPI } from "../services/api.service";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    setLoading(true);
     const res = await registerUserAPI(
       values.fullName,
       values.email,
@@ -25,6 +29,7 @@ const RegisterPage = () => {
         description: JSON.stringify(res.message),
       });
     }
+    setLoading(false);
   };
 
   return (
@@ -35,11 +40,19 @@ const RegisterPage = () => {
           <p>Đăng ký nhanh để bắt đầu quản lý người dùng và kho sách.</p>
         </div>
 
-        <Form layout="vertical" form={form} onFinish={onFinish} autoComplete="off">
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          autoComplete="off"
+          disabled={loading}
+        >
           <Form.Item
             label="Full Name"
             name="fullName"
-            rules={[{ required: true, message: "Please input your Full Name!" }]}
+            rules={[
+              { required: true, message: "Please input your Full Name!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -85,7 +98,7 @@ const RegisterPage = () => {
         </Form>
 
         <Typography.Text className="auth-footer">
-          Đã có tài khoản? {" "}
+          Đã có tài khoản?{" "}
           <span className="auth-link" onClick={() => navigate("/login")}>
             Đăng nhập ngay
           </span>

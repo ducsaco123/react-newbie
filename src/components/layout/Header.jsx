@@ -8,15 +8,30 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import { logoutAPI } from "../../services/api.service";
 import "./header.css";
 
 const Header = () => {
   const { user, setUser } = useContext(AuthContext);
+  const [current, setCurrent] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    if (location && location.pathname) {
+      const allRoutes = ["user", "book"];
+      const currentRoute = allRoutes.find(
+        (route) => `/${route}` === location.pathname,
+      );
+      if (currentRoute) {
+        setCurrent(currentRoute);
+      } else {
+        setCurrent("home");
+      }
+    }
+  }, [location]);
 
   const handleLogout = async () => {
     try {
@@ -46,12 +61,12 @@ const Header = () => {
     },
     {
       label: <NavLink to="/user">Users</NavLink>,
-      key: "users",
+      key: "user",
       icon: <UserOutlined />,
     },
     {
       label: <NavLink to="/book">Books</NavLink>,
-      key: "books",
+      key: "book",
       icon: <BookOutlined />,
     },
     ...(!user.id
@@ -100,9 +115,7 @@ const Header = () => {
         </Link>
         <Menu
           className="site-menu"
-          selectedKeys={[
-            location.pathname === "/" ? "home" : location.pathname.slice(1),
-          ]}
+          selectedKeys={[current]}
           mode="horizontal"
           items={items}
         />

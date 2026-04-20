@@ -13,6 +13,7 @@ const BookTable = ({
   setCurrent,
   setPageSize,
   fetchBooks,
+  isLoading,
 }) => {
   const [selectBook, setSelectBook] = useState(null);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
@@ -156,6 +157,7 @@ const BookTable = ({
           },
         }}
         onChange={onChange}
+        loading={isLoading}
       />
       <UpdateBookModal
         selectBook={selectBook}
